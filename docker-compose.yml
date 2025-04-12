@@ -29,9 +29,9 @@ services:
     container_name: UserPrefAI-backend
     build: ./backend
     ports:
-      - "8080:80"
+      - "8001:8001"
     volumes:
-      - ./backend/:app
+      - ./backend:/app
     networks:
       - docker_local_network
 
