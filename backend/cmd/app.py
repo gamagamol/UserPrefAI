@@ -4,7 +4,7 @@ import sys
 import os
 import bcrypt
 import base64
-import datetime
+from datetime import datetime, timedelta, timezone
 import jwt
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -22,8 +22,12 @@ def main():
     
     @app.route('/api/preferences', methods=['GET'])
     def getPreferences():
+        resultCheckToken=CheckToken()
         
-        data=model.GetUserById("67fa392ab2952543f36136b7")
+        if isinstance(resultCheckToken, tuple):
+            return resultCheckToken
+        
+        data=model.GetUserById(resultCheckToken)
         
         if isinstance(data, dict) and "error" in data:
             return jsonify({
@@ -40,7 +44,7 @@ def main():
                 "error":"User Preference Data Is Not Found"
                 }),404
                     
-        return jsonify(result ={
+        return jsonify({
             "status_code":200,
             "message":"Success Retive User Preference Data",
             "payload":data["preferences"]
@@ -49,7 +53,35 @@ def main():
     
     @app.route("/api/preferences",methods=["POST"])
     def savePreferences():
-        updated_data=model.SaveNewPreferences("67fa392ab2952543f36136b7",request.get_json())
+        resultCheckToken=CheckToken()
+        if isinstance(resultCheckToken, tuple):
+            return resultCheckToken
+        
+        if request.get_json()["theme"] =="" or request.get_json()["theme"] is None :
+            return jsonify(
+                {
+                    "status_code":400,
+                    "message":"Failed Update Preferences",
+                    "error":"theme cannot be null"
+                }
+                ),400
+        
+        if request.get_json()["language"] =="" or request.get_json()["language"] is None :
+            return jsonify({
+                    "status_code":400,
+                    "message":"Failed Update Preferences",
+                    "error":"language cannot be null"
+                }),400
+        
+        if  request.get_json()["notification"] is None :
+            return jsonify({
+                    "status_code":400,
+                    "message":"Failed Update Preferences",
+                    "error":"notification cannot be null"
+                } ),400
+         
+         
+        updated_data=model.SaveNewPreferences(resultCheckToken,request.get_json())
         
         if isinstance(updated_data, dict) and "error" in updated_data:
             return jsonify({
@@ -168,7 +200,7 @@ def main():
         # implement jwt
         payload = {
             "userId": str(user["_id"]),
-            "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+             "exp": datetime.now(timezone.utc) + timedelta(hours=1)
         }
         
         token = jwt.encode(payload, config["SecretKey"], algorithm="HS256")
@@ -187,7 +219,36 @@ def main():
         response = make_response(jsonify({"message": "Logged out"}))
         response.set_cookie("access_token", "", expires=0)
         return response
+    
+    
+    def CheckToken():
+        token = request.cookies.get('access_token')
+        if  token is None:
+            return jsonify({
+                "status_code":401,
+                "message": "Unathorize Token",
+                "Error":"Token Not Found"
+                }), 401
         
+        try:
+            decoded_payload = jwt.decode(token, config["SecretKey"], algorithms=["HS256"])
+            return decoded_payload.get("userId")
+        
+        except jwt.ExpiredSignatureError:
+            
+            return jsonify({
+                "status_code":401,
+                "message": "Failed Verify Token",
+                "error":"Token has expired"
+                }), 401
+            
+        except jwt.InvalidTokenError:
+            return jsonify({
+                "status_token":401,
+                 "message": "Failed Verify Token",
+                "error":"Token has expired"
+                }), 401
+            
     
     app.run(host="0.0.0.0", port=config["AppPort"])
     
