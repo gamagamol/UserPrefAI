@@ -17,14 +17,15 @@ services:
   
   frontend:
     container_name: UserPrefAI-frontend
+    platform: linux/amd64  #dd this if you using arm 
     build: ./frontend
-    image: userPrefAI-frontend
     ports:
       - "5173:5173"
     volumes:
-      - ./frontend/:/app
+      - ./frontend:/app
     networks:
       - docker_local_network
+      
   backend:
     container_name: UserPrefAI-backend
     build: ./backend
