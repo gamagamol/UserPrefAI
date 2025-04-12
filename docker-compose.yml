@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  mongo:
+   container_name: mongo
+   image: mongo
+   ports:
+     - "27017:27017"
+   environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: localhost
+   volumes:
+      - ./initdb.d:/docker-entrypoint-initdb.d  # Menambahkan skrip inisialisasi
+   networks:
+    - docker_local_network
+  
+  frontend:
+    container_name: UserPrefAI-frontend
+    build: ./frontend
+    image: userPrefAI-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/:/app
+    networks:
+      - docker_local_network
+  backend:
+    container_name: UserPrefAI-backend
+    build: ./backend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend/:app
+    networks:
+      - docker_local_network
+
+networks:
+  docker_local_network:
+   driver: bridge
