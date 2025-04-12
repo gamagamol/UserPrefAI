@@ -1,9 +1,11 @@
-from flask import Flask,request,jsonify
+from flask import Flask,request,jsonify,make_response
 from flask_cors import CORS
 import sys
 import os
 import bcrypt
 import base64
+import datetime
+import jwt
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -153,8 +155,7 @@ def main():
                 "message":"Failed Login",
                 "error":"User Is Not Found"
                 }),404 
-            
-        password_is_correct=bcrypt.checkpw(password, user["password"])
+        password_is_correct=bcrypt.checkpw(password.encode('utf-8'), base64.b64decode(user['password'].encode('utf-8')))
        
         if not password_is_correct:
            return jsonify({
@@ -166,9 +167,11 @@ def main():
            
         # implement jwt
         payload = {
-            "userId": user["_id"],
+            "userId": str(user["_id"]),
             "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
         }
+        
+        token = jwt.encode(payload, config["SecretKey"], algorithm="HS256")
 
         response = make_response(jsonify({
             "status_code":201,
