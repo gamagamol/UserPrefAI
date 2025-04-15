@@ -45,15 +45,37 @@ default password : gamagamol
 
 ### 3. Change Preferences wihout prompt
 
-![prefences page](image-1.png)
+![preferences page](image-1.png)
 
 
 
-Upon successful login, the preferences will be initialized with default values from the backend. You can modify these defaults, such as:
-1.Toggling the dark mode
-2.Enabling or disabling notifications
-3.Changing the language
-4.When dark mode is activated, the general color scheme will switch to darker tones. Conversely, when dark mode is turned off, the color scheme will return to a lighter, white background.
-5.When notifications are disabled, the notification icon will be updated to reflect this change.
-6.Additionally, when you change the language, the labels and text within the interface will update accordingly. This application currently supports three languages: Indonesian, Japanese, and English.
+User Preferences
+Overview
+The user preferences panel allows you to customize your experience within the application. After logging in successfully, your preferences will be initialized with default values from the backend.
+Available Preferences
+Dark Mode
+Toggle between light and dark color schemes for the application.
+
+When enabled: The interface adopts darker tones for a more comfortable viewing experience in low-light environments
+When disabled: The interface uses a lighter color scheme with white backgrounds
+
+Notifications
+Control whether you receive system notifications.
+
+When enabled: You will receive all relevant notifications
+When disabled: The notification icon will update to reflect this change, and you won't receive any notifications
+
+Language Selection
+Choose your preferred language for the interface.
+Currently supported languages:
+
+English
+Indonesian
+Japanese
+
+When you change the language, all labels, text, and interface elements will update immediately to reflect your selected language.
+Usage
+The preferences panel is designed to be intuitive. Simply toggle switches or select options from dropdown menus to customize your experience. All changes are saved automatically and will persist across sessions.
+
+![preferences page](image-2.png)
 
