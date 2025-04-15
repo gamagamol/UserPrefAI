@@ -1,13 +1,18 @@
 import { faBell, faBellSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState,useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
  
 
 
 export default function NavComponent() {
 
-    const preferences=useSelector((state)=>state.preferences)
+    const preferences = useSelector((state) => state.preferences)
+    const auth = useSelector((state) => state.auth)
+    
+    if (!auth.isLogin) {
+        window.location.href = "/";
+    }
 
     const [showDropdown, setDropDown] = useState(false);
 
@@ -35,7 +40,7 @@ export default function NavComponent() {
             <span className='mr-5'>
             <FontAwesomeIcon icon={preferences.isEnabledNotification ? faBell : faBellSlash} className="text-black dark:text-white" />
             </span>
-            <button className="bg-white  dark:bg-black dark:text-white text-black text-xl " onClick={handleDropDown} >{ preferences.lang.greetings} gamagamol !</button>
+            <button className="bg-white  dark:bg-black dark:text-white text-black text-xl " onClick={handleDropDown} >{ preferences.lang.greetings} {auth.username} !</button>
             {showDropdown && (
                 <div className="absolute right-0 mt-10 mr-5 w-40 bg-white shadow-md rounded text-end text-black  dark:bg-black dark:text-white">
                  <button className=" p-2 text-xl" >Logout</button>

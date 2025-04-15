@@ -1,7 +1,21 @@
 
-  import axios from 'axios';
+import axios from 'axios';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../features/AuthSlice';
+import { updatePreferences } from '../features/PreferencesSlice';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
+    const [loginErr, setLoginErr] = useState({
+      isErr: false,
+      message:""
+    })
+  const dispatch = useDispatch();
+   const navigate = useNavigate();
+  
+  
+  
 
   const HandleLogin = () => {
     
@@ -9,21 +23,46 @@ export default function LoginPage() {
     const password = document.getElementById("password").value
     const apiUrl = process.env.VITE_URL_BACKEND;
 
+
+
     axios.post(`${apiUrl}/login`, {
-      username: username,
-      password:password
+      username,
+      password
     }, {
       headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-      .then(response => {
-        console.log(response);
-        console.log('Login Success:', response.data);
+        "Content-Type": "application/json"
+      },
+      withCredentials: true
+    }).then((response) => {
+
+      axios.get(`${apiUrl}/preferences`, {
+        withCredentials: true
+      }).then((response) => {
+        dispatch(updatePreferences(response.data.payload.Prefrences))
+        dispatch(login({username:response.data.payload.username}))
+        navigate("/user_preferences"); 
+      }).catch((err) => {
+         setLoginErr({
+          isErr: true,
+          message:"Server error"
+        })
       })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+    })
+    .catch((error) => {
+      if (error.response) {
+        setLoginErr({
+          isErr: true,
+          message:error.response.data.error
+        })
+      } else {
+        setLoginErr({
+          isErr: true,
+          message:"Server error"
+        })
+
+      }
+    });
+
 
 
   }
@@ -34,8 +73,10 @@ export default function LoginPage() {
           <div className="flex flex-col w-full gap-4">
             <div className="text-center  text-xl font-bold">
               Login
-            </div>
-
+          </div>
+          {loginErr.isErr &&
+            <span className='text-red-500 text-center'>{loginErr.message}</span>
+          }
             <div className="flex flex-col gap-2">
               <label htmlFor="username" className="">Username</label>
               <input type="text" id="username" className="p-2 rounded-3xl border-2 border-black" required />

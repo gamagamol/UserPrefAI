@@ -18,7 +18,7 @@ def main():
     model = UserModel(mongoDB)
     
     app = Flask(__name__)
-    CORS(app) 
+    CORS(app,supports_credentials=True) 
     
     @app.route('/api/preferences', methods=['GET'])
     def getPreferences():
@@ -168,14 +168,14 @@ def main():
         username=data["username"]
         password=data["password"]
         
-        if username =="" or username is None:
+        if username == "" or username is None:
             return jsonify({
                 "status_code":400,
                 "message":"Failed Login",
                 "error":"username is null"
             }),400
             
-        if password =="" or password is None:
+        if password == "" or password is None:
             return jsonify({
                 "status_code":400,
                 "message":"Failed Login",
@@ -190,6 +190,7 @@ def main():
                 "message":"Failed Login",
                 "error":"User Is Not Found"
                 }),404 
+        
         password_is_correct=bcrypt.checkpw(password.encode('utf-8'), base64.b64decode(user['password'].encode('utf-8')))
        
         if not password_is_correct:
