@@ -17,12 +17,15 @@ services:
   
   frontend:
     container_name: UserPrefAI-frontend
-    platform: linux/amd64  #dd this if you using arm 
     build: ./frontend
+    platform: linux/amd64
     ports:
       - "5173:5173"
     volumes:
       - ./frontend:/app
+      - /app/node_modules 
+    environment:
+    - ROLLUP_NATIVE_DISABLE=true
     networks:
       - docker_local_network
       

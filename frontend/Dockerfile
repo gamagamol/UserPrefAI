@@ -1,10 +1,17 @@
-# FROM node:20-alpine using this if your laptop not used ARM 
-FROM --platform=linux/amd64 node:20-alpine  
+FROM node:20-slim
 
 WORKDIR /app
+
+COPY package.json package-lock.json* ./
+
+ENV ROLLUP_NATIVE_DISABLE=true
+
+RUN rm -rf node_modules \
+  && npm install -D vite \
+  && npm install
+
 COPY . .
-RUN npm install
-RUN npm i @rollup/rollup-linux-x64-gnu --save-optional
-RUN npm update
+
 EXPOSE 5173
+
 CMD ["npm", "run", "dev", "--", "--host"]
