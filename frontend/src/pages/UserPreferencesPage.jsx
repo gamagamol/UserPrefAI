@@ -1,8 +1,8 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import NavComponent from '../components/NavComponent';
 import { updatePreferences } from '../features/PreferencesSlice';
-    
     
 export default function UserPreferencesPage() {
     const preferences = useSelector((state)=>state.preferences)
@@ -10,25 +10,84 @@ export default function UserPreferencesPage() {
     const [isEnabledNotification, setisEnabledNotification] = useState(preferences.isEnabledNotification);
     const dispatch = useDispatch();
 
-    const handleToggleTheme = () => {
+    const [isErr, setErr] = useState(false)
+    const [errMessage, setErrMessage] = useState("")
+    const apiUrl = process.env.VITE_URL_BACKEND;
+    
+
+    const handleToggleTheme = async () => {
         const newTheme = !isDarkTheme;
         setIsDarkTheme(newTheme);
         dispatch(updatePreferences({ isDarkTheme: newTheme }))
 
+        
+
+        axios.post(`${apiUrl}/preferences`, {
+            isDarkTheme: newTheme,
+            isEnabledNotification: preferences.isEnabledNotification,
+            language:preferences.language
+            }, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+        withCredentials: true
+        }).catch((err) => {
+            
+            setErr(true)
+            setErrMessage("Error While Update Theme")
+            setIsDarkTheme(!preferences.isDarkTheme);
+            dispatch(updatePreferences({ isDarkTheme: !preferences.isDarkTheme }))
+
+        })
+
+
     };
-    const handleToggleNotification = () => {
+    const handleToggleNotification =() => {
         const newNotif = !isEnabledNotification
         setisEnabledNotification(newNotif);
         dispatch(updatePreferences({ isEnabledNotification: newNotif }))
+
+         axios.post(`${apiUrl}/preferences`, {
+            isDarkTheme: preferences.isDarkTheme,
+            isEnabledNotification: newNotif,
+            language:preferences.language
+            }, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+        withCredentials: true
+        }).catch((err) => {
+            
+            setErr(true)
+            setErrMessage("Error While Update Notification")
+            setisEnabledNotification(!preferences.isEnabledNotification);
+            dispatch(updatePreferences({ isEnabledNotification: !preferences.isEnabledNotification }))
+
+        })
         
 
     };
 
-    const handleLanguageChange = (e) => {
+    const handleLanguageChange = async (e) => {
+        const oldLanguange = preferences.language
         dispatch(updatePreferences({ language: e.target.value }));
+
+         axios.post(`${apiUrl}/preferences`, {
+            isDarkTheme: preferences.isDarkTheme,
+            isEnabledNotification: preferences.isEnabledNotification,
+            language:e.target.value
+            }, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+        withCredentials: true
+        }).catch((err) => {
+            setErr(true)
+            setErrMessage("Error While Update Languange")
+            dispatch(updatePreferences({ language: oldLanguange }))
+
+        })
     };
-
-
 
     useEffect(() => {
         if (isDarkTheme) {
@@ -49,6 +108,8 @@ export default function UserPreferencesPage() {
                             {preferences.lang.preferencesTitle}
                         </div>
 
+                        {isErr && <span className='text-red-700 text-3xl font-bold' id="errMessage" > {errMessage} </span>
+                        }
                         <div className="flex flex-col gap-2">
 
                             <label htmlFor="languanges" className="">
