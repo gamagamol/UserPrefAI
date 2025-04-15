@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import NavComponent from '../components/NavComponent';
 import { updatePreferences } from '../features/PreferencesSlice';
@@ -46,12 +46,14 @@ export default function UserPreferencesPage() {
                 <div className="w-1/4 border-2 border-gray-300 flex justify-center items-center rounded-2xl   p-6 dark:bg-black dark:border-white dark:text-white">
                     <div className="flex flex-col w-full gap-4">
                         <div className="text-center  text-xl font-bold">
-                            User Preferences
+                            {preferences.lang.preferencesTitle}
                         </div>
 
                         <div className="flex flex-col gap-2">
 
-                            <label htmlFor="languanges" className="">Languanges</label>
+                            <label htmlFor="languanges" className="">
+                                {preferences.lang.languanges}
+                            </label>
                             <select
                                     name="languages"
                                     id="languages"
@@ -66,7 +68,10 @@ export default function UserPreferencesPage() {
                                     ))}
                             </select>
 
-                            <label >Dark Theme</label>
+                            <label >
+                                {preferences.lang.theme}
+
+                            </label>
                             <div className="relative inline-block w-11 h-5">
                                 <input
                                         id="switch-component-1"
@@ -81,7 +86,11 @@ export default function UserPreferencesPage() {
                                 ></label>
                             </div>
 
-                            <label >Notification</label>
+                            <label >
+                                {preferences.lang.notification}
+
+
+                            </label>
                             <div className="relative inline-block w-11 h-5">
                                 <input
                                         id="switch-component-2"

@@ -35,7 +35,7 @@ export default function NavComponent() {
             <span className='mr-5'>
             <FontAwesomeIcon icon={preferences.isEnabledNotification ? faBell : faBellSlash} className="text-black dark:text-white" />
             </span>
-            <button className="bg-white  dark:bg-black dark:text-white text-black text-xl " onClick={handleDropDown} >Welcome Back gamagamol !</button>
+            <button className="bg-white  dark:bg-black dark:text-white text-black text-xl " onClick={handleDropDown} >{ preferences.lang.greetings} gamagamol !</button>
             {showDropdown && (
                 <div className="absolute right-0 mt-10 mr-5 w-40 bg-white shadow-md rounded text-end text-black  dark:bg-black dark:text-white">
                  <button className=" p-2 text-xl" >Logout</button>
