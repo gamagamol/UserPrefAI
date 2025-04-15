@@ -47,7 +47,10 @@ def main():
         return jsonify({
             "status_code":200,
             "message":"Success Retive User Preference Data",
-            "payload":data["preferences"]
+            "payload":{
+                "username":data["username"],
+                "Prefrences":data["preferences"]
+            }
         }),200
     
     
@@ -57,7 +60,7 @@ def main():
         if isinstance(resultCheckToken, tuple):
             return resultCheckToken
         
-        if request.get_json()["theme"] =="" or request.get_json()["theme"] is None :
+        if request.get_json()["isDarkTheme"] is None :
             return jsonify(
                 {
                     "status_code":400,
@@ -73,7 +76,7 @@ def main():
                     "error":"language cannot be null"
                 }),400
         
-        if  request.get_json()["notification"] is None :
+        if  request.get_json()["isEnabledNotification"] is None :
             return jsonify({
                     "status_code":400,
                     "message":"Failed Update Preferences",
@@ -139,9 +142,9 @@ def main():
             "username":username,
             "password":base64.b64encode(bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())).decode('utf-8'),
             "preferences":{
-                "theme": "light",
+                "isDarkTheme": False,
                 "language": "english",
-                "notification": False
+                "isEnabledNotification": False
             }
         }    
         
@@ -200,7 +203,8 @@ def main():
         # implement jwt
         payload = {
             "userId": str(user["_id"]),
-             "exp": datetime.now(timezone.utc) + timedelta(hours=1)
+            "username":user["username"],
+            "exp": datetime.now(timezone.utc) + timedelta(hours=1)
         }
         
         token = jwt.encode(payload, config["SecretKey"], algorithm="HS256")

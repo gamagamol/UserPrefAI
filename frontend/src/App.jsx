@@ -1,14 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Route, Routes } from 'react-router-dom'
 import './index.css'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import UserPreferencesPage from './pages/UserPreferencesPage'
+
 
 function App() {
 
   return (
-    <div className="">
-      <h1 class="font-bold text-red-300">This is frontend</h1>
-    </div>
+    <>
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/user_preferences" element={<UserPreferencesPage />} />
+    </Routes>
+
+
+    </>
+      
   )
 }
 
