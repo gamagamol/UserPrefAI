@@ -36,7 +36,7 @@ export default function NavComponent() {
 
 
     return (
-        <nav className="p-6 fixed  top-0 z-10 text-white border-gray-200 border-1 w-full flex justify-end dark:bg-black ">
+        <nav className="p-6 fixed  top-0 z-10 text-white border-gray-200 border-1 w-full flex justify-end  dark:bg-black ">
             <span className='mr-5'>
             <FontAwesomeIcon icon={preferences.isEnabledNotification ? faBell : faBellSlash} className="text-black dark:text-white" />
             </span>

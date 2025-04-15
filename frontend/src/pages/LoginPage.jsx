@@ -39,7 +39,8 @@ export default function LoginPage() {
         withCredentials: true
       }).then((response) => {
         dispatch(updatePreferences(response.data.payload.Prefrences))
-        dispatch(login({username:response.data.payload.username}))
+        dispatch(login({ username: response.data.payload.username }))
+        
         navigate("/user_preferences"); 
       }).catch((err) => {
          setLoginErr({
