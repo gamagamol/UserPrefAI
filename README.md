@@ -39,5 +39,21 @@ docker compose up --d
 
 ![login page](image.png)
 
+default Username : gamagamol
+default password : gamagamol
 
+
+### 3. Change Preferences wihout prompt
+
+![prefences page](image-1.png)
+
+
+
+Upon successful login, the preferences will be initialized with default values from the backend. You can modify these defaults, such as:
+1.Toggling the dark mode
+2.Enabling or disabling notifications
+3.Changing the language
+4.When dark mode is activated, the general color scheme will switch to darker tones. Conversely, when dark mode is turned off, the color scheme will return to a lighter, white background.
+5.When notifications are disabled, the notification icon will be updated to reflect this change.
+6.Additionally, when you change the language, the labels and text within the interface will update accordingly. This application currently supports three languages: Indonesian, Japanese, and English.
 
