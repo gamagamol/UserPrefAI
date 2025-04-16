@@ -79,3 +79,52 @@ The preferences panel is designed to be intuitive. Simply toggle switches or sel
 
 ![preferences page](image-2.png)
 
+
+## 💬 Change Preferences Using Prompt
+
+If you want to test changing preferences using the prompt, you can use the following commands:
+
+### 🌙 Dark Mode
+- `dark mode`
+- `dark mode on`
+- `nyalakan mode gelap` *(Indonesian)*
+- `ダークモード` *(Japanese)*
+- `ダークモードをオンにする` *(Japanese)*
+
+### ☀️ Light Mode
+- `light mode`
+- `dark mode off`
+- `mode terang` *(Indonesian)*
+- `matikan mode gelap` *(Indonesian)*
+- `ライトモード` *(Japanese)*
+- `ダークモードをオフにする` *(Japanese)*
+
+### 🔕 Notification
+- `notification on`
+- `notification off`
+- `nyalakan pemberitahuan` *(Indonesian)*
+- `matikan pemberitahuan` *(Indonesian)*
+- `通知をオンにする` *(Japanese)*
+- `通知をオフにする` *(Japanese)*
+
+### 🌐 Change Language
+- `change language to indonesia`
+- `ubah bahasa menjadi bahasa indonesia` *(Indonesian)*
+- `インドネシア語に変更` *(Japanese)*
+
+- `change to english`
+- `ubah bahasa menjadi bahasa inggris` *(Indonesian)*
+- `英語に変更` *(Japanese)*
+
+- `change to japan`
+- `ubah bahasa menjadi bahasa jepang` *(Indonesian)*
+- `日本語に変更` *(Japanese)*
+
+
+![preferences page](image-3.png)
+
+![preferences page](image-4.png)
+
+
+
+
